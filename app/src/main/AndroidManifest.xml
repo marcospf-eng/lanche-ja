@@ -10,12 +10,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
 
-        <activity android:name=".presenter.snacklist.SnackListActivity">
+        <activity android:name=".presenter.burgerlist.BurgerListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".presenter.burgerchoice.BurgerChoiceActivity" />
+
+        <activity android:name=".presenter.shoppingcart.ShoppingCartActivity" />
+
+        <activity android:name=".presenter.ingredientlist.IngredientListActivity" />
+
+        <activity android:name=".presenter.promotionlist.PromotionListActivity" />
 
     </application>
 

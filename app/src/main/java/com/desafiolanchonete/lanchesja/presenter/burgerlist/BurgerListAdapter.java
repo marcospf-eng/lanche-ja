@@ -1,4 +1,4 @@
-package com.desafiolanchonete.lanchesja.presenter.snacklist;
+package com.desafiolanchonete.lanchesja.presenter.burgerlist;
 
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -10,10 +10,10 @@ import android.widget.TextView;
 
 import com.desafiolanchonete.lanchesja.R;
 import com.desafiolanchonete.lanchesja.data.model.Burger;
+import com.desafiolanchonete.lanchesja.infrastructure.ImageHelper;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
-import java.text.NumberFormat;
 import java.util.List;
 
 import butterknife.Bind;
@@ -22,9 +22,11 @@ import butterknife.ButterKnife;
 public class BurgerListAdapter extends RecyclerView.Adapter<BurgerListAdapter.BurgerViewHolder> {
 
     private List<Burger> mBurgerList;
+    private BurgerListContract.AdapterItemAction mAdapterItemAction;
 
-    public BurgerListAdapter(List<Burger> burgerList) {
+    public BurgerListAdapter(List<Burger> burgerList, BurgerListContract.AdapterItemAction adapterItemAction) {
         mBurgerList = burgerList;
+        mAdapterItemAction = adapterItemAction;
     }
 
     @Override
@@ -35,12 +37,7 @@ public class BurgerListAdapter extends RecyclerView.Adapter<BurgerListAdapter.Bu
 
     @Override
     public void onBindViewHolder(BurgerViewHolder holder, int position) {
-//        Picasso.with(holder.mBurguerImage.getContext())
-//                .load("https://goo.gl/W9WdaF")
-//                .placeholder(R.drawable.ic_launcher_background)
-//                .into(holder.mBurguerImage);
-
-        holder.populateView(mBurgerList.get(position));
+        holder.initView(mBurgerList.get(position));
     }
 
     @Override
@@ -64,25 +61,18 @@ public class BurgerListAdapter extends RecyclerView.Adapter<BurgerListAdapter.Bu
             ButterKnife.bind(this, itemView);
         }
 
-        public void populateView(Burger burger) {
-            loadImage(burger.getImageUrl());
+        public void initView(final Burger burger) {
+            ImageHelper.loadImageByUrl(burger.getImageUrl(), mBurgerImage, R.drawable.ic_launcher_background);
             mName.setText(burger.getName());
             mPrice.setText(burger.getFormattedPrice());
             mIngredients.setText(burger.getFormattedIngredientsList());
-        }
 
-        private void loadImage(String imageUrl) {
-            Picasso.Builder builder = new Picasso.Builder(mBurgerImage.getContext());
-            builder.listener(new Picasso.Listener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
-                /*holder.getIvSpeakerPicture()
-                        .setImageDrawable(context.getResources()
-                                .getDrawable("your drawable id"));*/
+                public void onClick(View v) {
+                    mAdapterItemAction.onClick(burger);
                 }
             });
-            builder.downloader(new OkHttpDownloader(mBurgerImage.getContext()));
-            builder.build().load(imageUrl).placeholder(R.drawable.ic_launcher_background).into(mBurgerImage);
         }
     }
 }

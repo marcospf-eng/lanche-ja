@@ -2,6 +2,9 @@ package com.desafiolanchonete.lanchesja.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class Ingredient {
 
     private int id;
@@ -9,6 +12,7 @@ public class Ingredient {
     private Double price;
     @SerializedName("image")
     private String imageUrl;
+    private int extraQuantity;
 
     public Ingredient() {
         /* Do nothing */
@@ -44,5 +48,18 @@ public class Ingredient {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public int getExtraQuantity() {
+        return extraQuantity;
+    }
+
+    public void setExtraQuantity(int extraQuantity) {
+        this.extraQuantity = extraQuantity;
+    }
+
+    public String getFormattedPrice() {
+        Locale locale = new Locale("pt", "BR");
+        return NumberFormat.getCurrencyInstance(locale).format(price);
     }
 }

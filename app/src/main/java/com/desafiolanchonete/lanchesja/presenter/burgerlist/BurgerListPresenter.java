@@ -1,4 +1,4 @@
-package com.desafiolanchonete.lanchesja.presenter.snacklist;
+package com.desafiolanchonete.lanchesja.presenter.burgerlist;
 
 import com.desafiolanchonete.lanchesja.data.Business.BurgerBusiness;
 import com.desafiolanchonete.lanchesja.data.Webservice;
@@ -9,9 +9,9 @@ import com.desafiolanchonete.lanchesja.infrastructure.OperationListener;
 
 import java.util.List;
 
-public class SnackListPresenter implements SnackListContract.Presenter {
+public class BurgerListPresenter implements BurgerListContract.Presenter {
 
-    private SnackListContract.View mView;
+    private BurgerListContract.View mView;
     private BurgerBusiness mBurgerBusiness;
 
     private OperationListener<List<Burger>> burgerListOperationListener = new OperationListener<List<Burger>>() {
@@ -26,19 +26,26 @@ public class SnackListPresenter implements SnackListContract.Presenter {
 
         @Override
         public void onError() {
-            mView.showErrorMessage("Ops! Ocorreu algum erro, tente novamente mais tarde.");
+            mView.showMessage("Ops! Ocorreu algum erro, tente novamente mais tarde.");
         }
     };
 
-    public SnackListPresenter(SnackListContract.View view) {
+    public BurgerListPresenter(BurgerListContract.View view) {
         mView = view;
         Webservice webservice = WebserviceManager.getApiInstance();
-        mBurgerBusiness = new BurgerBusiness(new BurgerRemoteRepositoryImplementation(webservice), burgerListOperationListener);
+        mBurgerBusiness = new BurgerBusiness(
+                new BurgerRemoteRepositoryImplementation(webservice),
+                burgerListOperationListener,
+                null);
     }
 
     @Override
     public void start() {
-        mView.showErrorMessage("Test");
         mBurgerBusiness.getBurgerList();
+    }
+
+    @Override
+    public void onBurgerSelected(Burger burger) {
+        mView.callBurgerChoiceActivity(burger);
     }
 }

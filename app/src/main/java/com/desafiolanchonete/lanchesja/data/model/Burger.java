@@ -60,8 +60,8 @@ public class Burger {
     }
 
     public String getFormattedPrice() {
-        Locale ptBr = new Locale("pt", "BR");
-        return NumberFormat.getCurrencyInstance(ptBr).format(getBurgerPrice());
+        Locale locale = new Locale("pt", "BR");
+        return NumberFormat.getCurrencyInstance(locale).format(getBurgerPrice());
     }
 
     public String getFormattedIngredientsList() {

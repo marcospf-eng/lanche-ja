@@ -2,46 +2,46 @@ package com.desafiolanchonete.lanchesja.data.Business;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.Nullable;
 
 import com.desafiolanchonete.lanchesja.data.model.Burger;
+import com.desafiolanchonete.lanchesja.data.model.Ingredient;
 import com.desafiolanchonete.lanchesja.data.repository.remote.BurgerRemoteRepositoryContract;
 import com.desafiolanchonete.lanchesja.infrastructure.OperationListener;
 import com.desafiolanchonete.lanchesja.infrastructure.OperationResult;
 
 import java.util.List;
 
-public class BurgerBusiness {
+public class BurgerBusiness extends BaseBusiness {
 
     private BurgerRemoteRepositoryContract mBurgerRemoteRepositoryContract;
     private OperationListener<List<Burger>> mBurgerOperationListener;
+    private OperationListener<List<Ingredient>> mIngredientListOperationListener;
 
     public BurgerBusiness(BurgerRemoteRepositoryContract burgerRemoteRepositoryContract,
-                          OperationListener<List<Burger>> burgerOperationListener) {
+                          @Nullable OperationListener<List<Burger>> burgerOperationListener,
+                          @Nullable OperationListener<List<Ingredient>> ingredientListOperationListener) {
         mBurgerRemoteRepositoryContract = burgerRemoteRepositoryContract;
         mBurgerOperationListener = burgerOperationListener;
+        mIngredientListOperationListener = ingredientListOperationListener;
     }
 
     public void getBurgerList() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                callbackExecution(mBurgerRemoteRepositoryContract.getBurgerList());
+                callbackExecution(mBurgerRemoteRepositoryContract.getBurgerList(), mBurgerOperationListener);
             }
         }).start();
     }
 
-    private void callbackExecution(final OperationResult<List<Burger>> operationResult) {
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(new Runnable() {
+    public void getAllIngredientList() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                if (operationResult.getType() == OperationResult.Type.SUCCESS) {
-                    mBurgerOperationListener.onSuccess(operationResult.getResult());
-                } else {
-                    mBurgerOperationListener.onError();
-                }
+                callbackExecution(mBurgerRemoteRepositoryContract.getAllIngredientList(), mIngredientListOperationListener);
             }
-        });
+        }).start();
     }
 
 }
