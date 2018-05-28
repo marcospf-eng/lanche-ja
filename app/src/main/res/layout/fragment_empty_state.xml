@@ -4,16 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_shopping_cart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <include
-        android:id="@+id/fragment_empty_state"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        layout="@layout/fragment_empty_state" />
+        android:gravity="center"
+        android:text="@string/empty_state_message" />
 
 </LinearLayout>

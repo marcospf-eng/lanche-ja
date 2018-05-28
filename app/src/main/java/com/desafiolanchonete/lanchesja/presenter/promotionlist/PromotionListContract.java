@@ -6,7 +6,7 @@ import com.desafiolanchonete.lanchesja.BaseView;
 public interface PromotionListContract {
 
     interface View extends BaseView<Presenter> {
-
+        void showEmptyState();
     }
 
     interface Presenter extends BasePresenter {

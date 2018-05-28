@@ -24,4 +24,11 @@
         android:textColor="@android:color/white"
         android:text="@string/button_finish_selection"/>
 
+    <include
+        android:id="@+id/fragment_empty_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        layout="@layout/fragment_empty_state" />
+
 </LinearLayout>

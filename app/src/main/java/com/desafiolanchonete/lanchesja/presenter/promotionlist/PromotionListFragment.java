@@ -3,17 +3,22 @@ package com.desafiolanchonete.lanchesja.presenter.promotionlist;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.desafiolanchonete.lanchesja.R;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class PromotionListFragment extends Fragment implements PromotionListContract.View {
 
     private PromotionListContract.Presenter mPresenter;
+
+    @Bind(R.id.rv_promotion_list) RecyclerView mPromotionList;
+    @Bind(R.id.fragment_empty_state) View mEmptyStateView;
 
     public static PromotionListFragment newInstance() {
         return new PromotionListFragment();
@@ -37,5 +42,11 @@ public class PromotionListFragment extends Fragment implements PromotionListCont
     @Override
     public void setPresenter(PromotionListContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void showEmptyState() {
+        mPromotionList.setVisibility(View.INVISIBLE);
+        mEmptyStateView.setVisibility(View.VISIBLE);
     }
 }

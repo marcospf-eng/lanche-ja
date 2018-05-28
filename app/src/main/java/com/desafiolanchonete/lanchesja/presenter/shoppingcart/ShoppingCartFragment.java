@@ -22,8 +22,8 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartContra
 
     private ShoppingCartContract.Presenter mPresenter;
 
-    @Bind(R.id.rv_shopping_cart)
-    RecyclerView mShoppingCartList;
+    @Bind(R.id.rv_shopping_cart) RecyclerView mShoppingCartList;
+    @Bind(R.id.fragment_empty_state) View mEmptyStateView;
 
     public static ShoppingCartFragment newInstance() {
         return new ShoppingCartFragment();
@@ -63,6 +63,7 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartContra
 
     @Override
     public void showEmptyState() {
-
+        mShoppingCartList.setVisibility(View.INVISIBLE);
+        mEmptyStateView.setVisibility(View.VISIBLE);
     }
 }

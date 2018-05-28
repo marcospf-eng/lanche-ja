@@ -24,6 +24,7 @@ public class BurgerListFragment extends Fragment implements BurgerListContract.V
     private BurgerListContract.Presenter mPresenter;
 
     @Bind(R.id.rv_burger_list) RecyclerView mBurgerList;
+    @Bind(R.id.fragment_empty_state) View mEmptyStateView;
 
     public BurgerListContract.AdapterItemAction adapterItemAction = new BurgerListContract.AdapterItemAction() {
         @Override
@@ -71,7 +72,8 @@ public class BurgerListFragment extends Fragment implements BurgerListContract.V
 
     @Override
     public void showEmptyState() {
-
+        mBurgerList.setVisibility(View.INVISIBLE);
+        mEmptyStateView.setVisibility(View.VISIBLE);
     }
 
     @Override

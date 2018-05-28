@@ -29,6 +29,7 @@ public class IngredientListFragment extends Fragment implements IngredientListCo
 
     @Bind(R.id.rv_ingredient_list) RecyclerView mIngredientList;
     @Bind(R.id.button_finish_ingredient_selection) Button mFinishSelection;
+    @Bind(R.id.fragment_empty_state) View mEmptyStateView;
 
     private IngredientListContract.AdapterItemAction mAdapterItemAction = new IngredientListContract.AdapterItemAction() {
         @Override
@@ -84,7 +85,9 @@ public class IngredientListFragment extends Fragment implements IngredientListCo
 
     @Override
     public void showEmptyState() {
-
+        mIngredientList.setVisibility(View.INVISIBLE);
+        mFinishSelection.setVisibility(View.INVISIBLE);
+        mEmptyStateView.setVisibility(View.VISIBLE);
     }
 
     @Override

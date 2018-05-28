@@ -11,4 +11,6 @@
 
     <string name="custom_burger_your_way">%1$s - do seu jeito</string>
 
+    <string name="empty_state_message">Não há nenhum item para ser exibido.</string>
+
 </resources>
