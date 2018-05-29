@@ -1,5 +1,6 @@
 package com.desafiolanchonete.lanchesja.data;
 
+import com.desafiolanchonete.lanchesja.data.model.request.AddExtrasBurgerCartRequest;
 import com.google.gson.JsonArray;
 
 import okhttp3.ResponseBody;
@@ -14,11 +15,11 @@ public interface Webservice {
     @GET("lanche")
     Call<ResponseBody> requestBurgerList();
 
+    @GET("promocao")
+    Call<ResponseBody> requestPromotionList();
+
     @GET("ingrediente")
     Call<ResponseBody> requestAllIngredientList();
-
-    @GET("ingrediente/de/{id}")
-    Call<ResponseBody> requestBurgerIngredientList(@Path("id") int burgerId);
 
     @GET("pedido")
     Call<ResponseBody> requestBurgerOrderList();
@@ -27,7 +28,7 @@ public interface Webservice {
     Call<ResponseBody> putBurgerOrder(@Path("id") int burgerId);
 
     @PUT("pedido/{id}")
-    Call<ResponseBody> putBurgerOrderWithExtra(@Path("id") int burgerId, @Body JsonArray jsonArray);
+    Call<ResponseBody> putBurgerOrderWithExtra(@Path("id") int burgerId, @Body AddExtrasBurgerCartRequest addExtrasBurgerCartRequest);
 
 }
 

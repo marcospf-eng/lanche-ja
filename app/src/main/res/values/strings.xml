@@ -13,4 +13,10 @@
 
     <string name="empty_state_message">Não há nenhum item para ser exibido.</string>
 
+    <string name="loading_message">"Carregando..."</string>
+    <string name="navigation_drawer_open">open</string>
+    <string name="navigation_drawer_close">close</string>
+
+    <string name="custom_burger_ingredients_extras">Adicional: %1$s</string>
+
 </resources>

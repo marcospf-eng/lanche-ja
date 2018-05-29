@@ -22,10 +22,13 @@ public class BurgerListPresenter implements BurgerListContract.Presenter {
             } else {
                 mView.showEmptyState();
             }
+
+            mView.loadingControl(false);
         }
 
         @Override
         public void onError() {
+            mView.loadingControl(false);
             mView.showMessage("Ops! Ocorreu algum erro, tente novamente mais tarde.");
         }
     };
@@ -41,6 +44,7 @@ public class BurgerListPresenter implements BurgerListContract.Presenter {
 
     @Override
     public void start() {
+        mView.loadingControl(true);
         mBurgerBusiness.getBurgerList();
     }
 

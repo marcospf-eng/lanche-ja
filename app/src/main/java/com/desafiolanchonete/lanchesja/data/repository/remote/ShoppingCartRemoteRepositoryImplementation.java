@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.desafiolanchonete.lanchesja.data.Webservice;
 import com.desafiolanchonete.lanchesja.data.model.Order;
+import com.desafiolanchonete.lanchesja.data.model.request.AddExtrasBurgerCartRequest;
 import com.desafiolanchonete.lanchesja.infrastructure.OperationResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -26,12 +27,14 @@ public class ShoppingCartRemoteRepositoryImplementation implements ShoppingCartR
     }
 
     @Override
-    public OperationResult<Order> setBurgerOrder(int burgerId, @Nullable JsonArray extraIngredients) {
+    public OperationResult<Order> setBurgerOrder(int burgerId, @Nullable AddExtrasBurgerCartRequest addExtrasBurgerCartRequest) {
         OperationResult<Order> result = new OperationResult<>();
         Response<ResponseBody> response = null;
         try {
-            if (extraIngredients != null && extraIngredients.size() > 0) {
-                response = mWebservice.putBurgerOrderWithExtra(burgerId, extraIngredients).execute();
+            if (addExtrasBurgerCartRequest != null &&
+                    addExtrasBurgerCartRequest.getIngredientsExtra() != null &&
+                    addExtrasBurgerCartRequest.getIngredientsExtra().size() > 0) {
+                response = mWebservice.putBurgerOrderWithExtra(burgerId, addExtrasBurgerCartRequest).execute();
             } else {
                 response = mWebservice.putBurgerOrder(burgerId).execute();
             }
@@ -45,6 +48,9 @@ public class ShoppingCartRemoteRepositoryImplementation implements ShoppingCartR
 
             result.setType(OperationResult.Type.SUCCESS);
         } catch (IOException e) {
+            result.setType(OperationResult.Type.ERROR);
+            e.printStackTrace();
+        } catch (Exception e) {
             result.setType(OperationResult.Type.ERROR);
             e.printStackTrace();
         }
@@ -67,6 +73,9 @@ public class ShoppingCartRemoteRepositoryImplementation implements ShoppingCartR
             }
             result.setType(OperationResult.Type.SUCCESS);
         } catch (IOException e) {
+            result.setType(OperationResult.Type.ERROR);
+            e.printStackTrace();
+        } catch (Exception e) {
             result.setType(OperationResult.Type.ERROR);
             e.printStackTrace();
         }

@@ -13,8 +13,9 @@ public interface BurgerChoiceContract {
         void showMessage(String message);
         void callIngredientListActivity();
         void callShoppingCartActivity();
-        void initView(String burgerFormattedPrice, boolean isCustom);
-        void updateView(String burgerFormattedPrice, boolean isCustom);
+        void initView(String burgerFormattedPrice, boolean isCustom, String mCustomIngredientList);
+        void updateView(String burgerFormattedPrice, boolean isCustom, String mCustomIngredientList);
+        void loadingControl(boolean visibility);
     }
 
     interface Presenter extends BasePresenter {

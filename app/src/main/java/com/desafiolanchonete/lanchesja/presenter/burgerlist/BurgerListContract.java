@@ -13,6 +13,9 @@ public interface BurgerListContract {
         void showBurgerList(List<Burger> burgerList);
         void showEmptyState();
         void callBurgerChoiceActivity(Burger selectedBurger);
+        void callPromotionListActivity();
+        void callShoppingCartActivity();
+        void loadingControl(boolean visibility);
     }
 
     interface Presenter extends BasePresenter {

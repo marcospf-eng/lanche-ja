@@ -1,5 +1,6 @@
 package com.desafiolanchonete.lanchesja.data.model;
 
+import com.desafiolanchonete.lanchesja.infrastructure.Utils;
 import com.google.gson.annotations.SerializedName;
 
 import java.text.NumberFormat;
@@ -59,7 +60,6 @@ public class Ingredient {
     }
 
     public String getFormattedPrice() {
-        Locale locale = new Locale("pt", "BR");
-        return NumberFormat.getCurrencyInstance(locale).format(price);
+        return Utils.getFormattedCurrencyDouble(price);
     }
 }

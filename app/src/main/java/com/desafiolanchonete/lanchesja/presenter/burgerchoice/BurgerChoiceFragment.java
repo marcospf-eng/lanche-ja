@@ -1,5 +1,6 @@
 package com.desafiolanchonete.lanchesja.presenter.burgerchoice;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.desafiolanchonete.lanchesja.BaseActivity;
 import com.desafiolanchonete.lanchesja.R;
 import com.desafiolanchonete.lanchesja.data.model.Burger;
 import com.desafiolanchonete.lanchesja.data.model.Ingredient;
@@ -34,12 +35,13 @@ public class BurgerChoiceFragment extends Fragment implements BurgerChoiceContra
 
     private BurgerChoiceContract.Presenter mPresenter;
     private Burger mBurger;
+    private ProgressDialog mProgressDialog;
 
     @Bind(R.id.img_burger_choice) ImageView mBurgerImage;
     @Bind(R.id.txt_burger_choice_name) TextView mBurgerName;
     @Bind(R.id.txt_burger_choice_price) TextView mBurgerPrice;
     @Bind(R.id.txt_burger_choice_ingredients) TextView mBurgerIngredients;
-    @Bind(R.id.txt_burger_choice_description) TextView mBurgerDescription;
+    @Bind(R.id.txt_burger_choice_ingredients_extras) TextView mBurgerIngredientsExtras;
     @Bind(R.id.fab_burger_choice_custom) FloatingActionButton mCustomBurger;
     @Bind(R.id.fab_burger_choice_add_cart) FloatingActionButton mAddCart;
 
@@ -105,7 +107,9 @@ public class BurgerChoiceFragment extends Fragment implements BurgerChoiceContra
 
     @Override
     public void showMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        if (getActivity() != null) {
+            ((BaseActivity) getActivity()).showToast(getContext(), message);
+        }
     }
 
     @Override
@@ -126,10 +130,10 @@ public class BurgerChoiceFragment extends Fragment implements BurgerChoiceContra
     }
 
     @Override
-    public void initView(String burgerFormattedPrice, boolean isCustom) {
+    public void initView(String burgerFormattedPrice, boolean isCustom, String mCustomIngredientList) {
         ImageHelper.loadImageByUrl(mBurger.getImageUrl(), mBurgerImage, R.drawable.ic_launcher_background);
         mBurgerPrice.setText(burgerFormattedPrice);
-        mBurgerIngredients.setText(mBurger.getFormattedIngredientsList());
+        mBurgerIngredients.setText(mBurger.getFormattedIngredientList());
 
         if (isCustom) {
             mBurgerName.setText(getString(R.string.custom_burger_your_way, mBurger.getName()));
@@ -137,12 +141,13 @@ public class BurgerChoiceFragment extends Fragment implements BurgerChoiceContra
             mBurgerName.setText(mBurger.getName());
         }
 
+        mBurgerIngredientsExtras.setText(getString(R.string.custom_burger_ingredients_extras, mCustomIngredientList));
         mCustomBurger.setOnClickListener(mCustomBurgerClickListener);
         mAddCart.setOnClickListener(mAddCartClickListener);
     }
 
     @Override
-    public void updateView(String burgerFormattedPrice, boolean isCustom) {
+    public void updateView(String burgerFormattedPrice, boolean isCustom, String mCustomIngredientList) {
         mBurgerPrice.setText(burgerFormattedPrice);
 
         if (isCustom) {
@@ -150,7 +155,24 @@ public class BurgerChoiceFragment extends Fragment implements BurgerChoiceContra
         } else {
             mBurgerName.setText(mBurger.getName());
         }
+
+        mBurgerIngredientsExtras.setText(getString(R.string.custom_burger_ingredients_extras, mCustomIngredientList));
     }
 
+    @Override
+    public void loadingControl(boolean visibility) {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(getContext());
+            mProgressDialog.setMessage(getString(R.string.loading_message));
+        }
+
+        if (getActivity() != null) {
+            if (!visibility && mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            } else {
+                mProgressDialog.show();
+            }
+        }
+    }
 
 }

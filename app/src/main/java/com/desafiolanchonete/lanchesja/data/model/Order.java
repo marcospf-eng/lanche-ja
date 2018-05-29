@@ -1,5 +1,6 @@
 package com.desafiolanchonete.lanchesja.data.model;
 
+import com.desafiolanchonete.lanchesja.infrastructure.Utils;
 import com.google.gson.annotations.SerializedName;
 
 import java.text.SimpleDateFormat;
@@ -12,7 +13,8 @@ public class Order {
     private int id;
     @SerializedName("sandwiche")
     private Burger burger;
-    private List<Integer> extras;
+    @SerializedName("extras")
+    private List<Ingredient> ingredientExtras;
     @SerializedName("date")
     private Long dateMilliseconds;
 
@@ -36,12 +38,12 @@ public class Order {
         this.burger = burger;
     }
 
-    public List<Integer> getExtras() {
-        return extras;
+    public List<Ingredient> getIngredientExtras() {
+        return ingredientExtras;
     }
 
-    public void setExtras(List<Integer> extras) {
-        this.extras = extras;
+    public void setIngredientExtras(List<Ingredient> ingredientExtras) {
+        this.ingredientExtras = ingredientExtras;
     }
 
     public Long getDateMilliseconds() {
@@ -50,6 +52,10 @@ public class Order {
 
     public void setDateMilliseconds(Long dateMilliseconds) {
         this.dateMilliseconds = dateMilliseconds;
+    }
+
+    public String getFormattedIngredients() {
+        return Utils.getFormattedIngredientList(ingredientExtras);
     }
 
     public String getFormattedDate() {

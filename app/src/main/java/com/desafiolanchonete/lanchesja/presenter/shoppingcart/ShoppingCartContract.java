@@ -12,6 +12,7 @@ public interface ShoppingCartContract {
         void showMessage(String message);
         void showOrderList(List<Order> orderList);
         void showEmptyState();
+        void loadingControl(boolean visibility);
     }
 
     interface Presenter extends BasePresenter {

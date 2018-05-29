@@ -1,6 +1,6 @@
 package com.desafiolanchonete.lanchesja.presenter.burgerchoice;
 
-import android.util.Pair;
+import android.support.v4.util.Pair;
 
 import com.desafiolanchonete.lanchesja.data.Business.ShoppingCartBusiness;
 import com.desafiolanchonete.lanchesja.data.Webservice;
@@ -8,15 +8,15 @@ import com.desafiolanchonete.lanchesja.data.WebserviceManager;
 import com.desafiolanchonete.lanchesja.data.model.Burger;
 import com.desafiolanchonete.lanchesja.data.model.Ingredient;
 import com.desafiolanchonete.lanchesja.data.model.Order;
+import com.desafiolanchonete.lanchesja.data.model.request.AddExtrasBurgerCartRequest;
 import com.desafiolanchonete.lanchesja.data.repository.remote.ShoppingCartRemoteRepositoryImplementation;
 import com.desafiolanchonete.lanchesja.infrastructure.OperationListener;
+import com.desafiolanchonete.lanchesja.infrastructure.Utils;
 import com.google.gson.JsonArray;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class BurgerChoicePresenter implements BurgerChoiceContract.Presenter {
@@ -29,12 +29,14 @@ public class BurgerChoicePresenter implements BurgerChoiceContract.Presenter {
     private OperationListener<Order> mBurgerAddCartOperationListener = new OperationListener<Order>() {
         @Override
         public void onSuccess(Order order) {
+            mView.loadingControl(false);
             mView.callShoppingCartActivity();
         }
 
         @Override
         public void onError() {
-
+            mView.loadingControl(false);
+            mView.showMessage("Ops! Ocorreu algum erro, tente novamente mais tarde.");
         }
     };
 
@@ -49,7 +51,10 @@ public class BurgerChoicePresenter implements BurgerChoiceContract.Presenter {
 
     @Override
     public void start() {
-        mView.initView(calculateBurgerPrice(), mCustomIngredientList != null && !mCustomIngredientList.isEmpty());
+        mView.initView(
+                calculateBurgerPrice(mBurger.getIngredientList(), mCustomIngredientList),
+                mCustomIngredientList != null && !mCustomIngredientList.isEmpty(),
+                Utils.getFormattedIngredientList(mCustomIngredientList));
     }
 
     @Override
@@ -64,26 +69,33 @@ public class BurgerChoicePresenter implements BurgerChoiceContract.Presenter {
 
     @Override
     public void addCartClick() {
-        mShoppingCartBusiness.setBurgerOrder(mBurger.getId(), getPreparedExtraIngredients());
+        mView.loadingControl(true);
+        AddExtrasBurgerCartRequest addExtrasBurgerCartRequest = new AddExtrasBurgerCartRequest();
+        addExtrasBurgerCartRequest.setIngredientsExtra(getPreparedExtraIngredients());
+        mShoppingCartBusiness.setBurgerOrder(mBurger.getId(), addExtrasBurgerCartRequest);
     }
 
     @Override
     public void updateCustomChanges(List<Ingredient> ingredientList) {
         mCustomIngredientList = ingredientList;
-        mView.updateView(calculateBurgerPrice(), !mCustomIngredientList.isEmpty());
+        mView.updateView(
+                calculateBurgerPrice(mBurger.getIngredientList(), mCustomIngredientList),
+                !mCustomIngredientList.isEmpty(),
+                Utils.getFormattedIngredientList(mCustomIngredientList));
     }
 
-    public String calculateBurgerPrice() {
+    public String calculateBurgerPrice(List<Ingredient> burgerIngredientList, List<Ingredient> customIngredientList) {
         Double price = 0.0;
+
         // <IngredientId, <Quantity, Value>>
         HashMap<Integer, Pair<Integer, Double>> map = new HashMap<>();
-        List<Ingredient> allIngredients = new ArrayList<>(mBurger.getIngredientList());
-        if (mCustomIngredientList != null && !mCustomIngredientList.isEmpty()) {
-            allIngredients.addAll(mCustomIngredientList);
+        List<Ingredient> allIngredients = new ArrayList<>(burgerIngredientList);
+        if (customIngredientList != null && !customIngredientList.isEmpty()) {
+            allIngredients.addAll(customIngredientList);
         }
 
         for (Ingredient ingredient : allIngredients) {
-            int quantity = (ingredient.getExtraQuantity() == 0) ? 1 : ingredient.getExtraQuantity();
+            int quantity = (ingredient.getExtraQuantity() <= 1) ? 1 : ingredient.getExtraQuantity();
 
             if (map.containsKey(ingredient.getId())) {
                 Integer count = map.get(ingredient.getId()).first;
@@ -118,7 +130,7 @@ public class BurgerChoicePresenter implements BurgerChoiceContract.Presenter {
 
             if (cheeseQuantity > 3) {
                 cheeseQuantity = (int)(Math.floor(cheeseQuantity / 3) * 2) + cheeseQuantity % 3;
-                map.put(3, Pair.create(cheeseQuantity, cheesePrice));
+                map.put(5, Pair.create(cheeseQuantity, cheesePrice));
             }
         }
 
@@ -130,8 +142,7 @@ public class BurgerChoicePresenter implements BurgerChoiceContract.Presenter {
             price = price * 0.9;
         }
 
-        Locale locale = new Locale("pt", "BR");
-        return NumberFormat.getCurrencyInstance(locale).format(price);
+        return Utils.getFormattedCurrencyDouble(price);
     }
 
     private JsonArray getPreparedExtraIngredients() {

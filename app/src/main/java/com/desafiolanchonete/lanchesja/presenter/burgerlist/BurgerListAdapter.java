@@ -65,7 +65,7 @@ public class BurgerListAdapter extends RecyclerView.Adapter<BurgerListAdapter.Bu
             ImageHelper.loadImageByUrl(burger.getImageUrl(), mBurgerImage, R.drawable.ic_launcher_background);
             mName.setText(burger.getName());
             mPrice.setText(burger.getFormattedPrice());
-            mIngredients.setText(burger.getFormattedIngredientsList());
+            mIngredients.setText(burger.getFormattedIngredientList());
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -1,5 +1,6 @@
 package com.desafiolanchonete.lanchesja.presenter.shoppingcart;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.desafiolanchonete.lanchesja.BaseActivity;
 import com.desafiolanchonete.lanchesja.R;
 import com.desafiolanchonete.lanchesja.data.model.Order;
 
@@ -21,6 +23,7 @@ import butterknife.ButterKnife;
 public class ShoppingCartFragment extends Fragment implements ShoppingCartContract.View {
 
     private ShoppingCartContract.Presenter mPresenter;
+    private ProgressDialog mProgressDialog;
 
     @Bind(R.id.rv_shopping_cart) RecyclerView mShoppingCartList;
     @Bind(R.id.fragment_empty_state) View mEmptyStateView;
@@ -51,7 +54,9 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartContra
 
     @Override
     public void showMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        if (getActivity() != null) {
+            ((BaseActivity) getActivity()).showToast(getContext(), message);
+        }
     }
 
     @Override
@@ -66,4 +71,19 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartContra
         mShoppingCartList.setVisibility(View.INVISIBLE);
         mEmptyStateView.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void loadingControl(boolean visibility) {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(getContext());
+            mProgressDialog.setMessage(getString(R.string.loading_message));
+        }
+
+        if (!visibility && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        } else {
+            mProgressDialog.show();
+        }
+    }
+
 }

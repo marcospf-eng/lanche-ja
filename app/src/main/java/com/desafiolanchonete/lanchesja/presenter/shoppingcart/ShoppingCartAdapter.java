@@ -51,7 +51,8 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
 
         public void initView(final Order order) {
             mBurgerName.setText(order.getBurger().getName());
-            mExtras.setText("test");
+            mExtras.setText(itemView.getContext().getString(R.string.custom_burger_ingredients_extras,
+                    order.getFormattedIngredients()));
             mOrderDate.setText(order.getFormattedDate());
         }
     }

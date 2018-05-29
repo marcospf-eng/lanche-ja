@@ -1,5 +1,6 @@
 package com.desafiolanchonete.lanchesja.presenter.burgerlist;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,9 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.desafiolanchonete.lanchesja.BaseActivity;
 import com.desafiolanchonete.lanchesja.R;
 import com.desafiolanchonete.lanchesja.data.model.Burger;
 import com.desafiolanchonete.lanchesja.presenter.burgerchoice.BurgerChoiceActivity;
+import com.desafiolanchonete.lanchesja.presenter.promotionlist.PromotionListActivity;
+import com.desafiolanchonete.lanchesja.presenter.shoppingcart.ShoppingCartActivity;
 
 import java.util.List;
 
@@ -22,6 +26,7 @@ import butterknife.ButterKnife;
 public class BurgerListFragment extends Fragment implements BurgerListContract.View {
 
     private BurgerListContract.Presenter mPresenter;
+    private ProgressDialog mProgressDialog;
 
     @Bind(R.id.rv_burger_list) RecyclerView mBurgerList;
     @Bind(R.id.fragment_empty_state) View mEmptyStateView;
@@ -60,7 +65,9 @@ public class BurgerListFragment extends Fragment implements BurgerListContract.V
 
     @Override
     public void showMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        if (getActivity() != null) {
+            ((BaseActivity) getActivity()).showToast(getContext(), message);
+        }
     }
 
     @Override
@@ -79,5 +86,29 @@ public class BurgerListFragment extends Fragment implements BurgerListContract.V
     @Override
     public void callBurgerChoiceActivity(Burger selectedBurger) {
         startActivity(BurgerChoiceActivity.getNewIntent(getContext(), selectedBurger));
+    }
+
+    @Override
+    public void callPromotionListActivity() {
+        startActivity(PromotionListActivity.getNewIntent(getContext()));
+    }
+
+    @Override
+    public void callShoppingCartActivity() {
+        startActivity(ShoppingCartActivity.getNewIntent(getContext()));
+    }
+
+    @Override
+    public void loadingControl(boolean visibility) {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(getContext());
+            mProgressDialog.setMessage(getString(R.string.loading_message));
+        }
+
+        if (!visibility && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        } else {
+            mProgressDialog.show();
+        }
     }
 }

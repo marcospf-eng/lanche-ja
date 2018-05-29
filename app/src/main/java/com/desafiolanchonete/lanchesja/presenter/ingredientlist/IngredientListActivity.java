@@ -10,9 +10,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.desafiolanchonete.lanchesja.BaseActivity;
 import com.desafiolanchonete.lanchesja.R;
 
-public class IngredientListActivity extends AppCompatActivity {
+public class IngredientListActivity extends BaseActivity {
 
     public static final int PICK_INGREDIENTS_CHOICE = 1;
     public static final String INTENT_DATA_INGREDIENTS = "INTENT_DATA_INGREDIENTS";

@@ -1,14 +1,11 @@
 package com.desafiolanchonete.lanchesja.data.Business;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 
 import com.desafiolanchonete.lanchesja.data.model.Burger;
 import com.desafiolanchonete.lanchesja.data.model.Ingredient;
 import com.desafiolanchonete.lanchesja.data.repository.remote.BurgerRemoteRepositoryContract;
 import com.desafiolanchonete.lanchesja.infrastructure.OperationListener;
-import com.desafiolanchonete.lanchesja.infrastructure.OperationResult;
 
 import java.util.List;
 

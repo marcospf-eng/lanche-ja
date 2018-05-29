@@ -40,6 +40,9 @@ public class BurgerRemoteRepositoryImplementation implements BurgerRemoteReposit
         } catch (IOException e) {
             result.setType(OperationResult.Type.ERROR);
             e.printStackTrace();
+        } catch (Exception e) {
+            result.setType(OperationResult.Type.ERROR);
+            e.printStackTrace();
         }
 
         return result;
@@ -60,6 +63,9 @@ public class BurgerRemoteRepositoryImplementation implements BurgerRemoteReposit
             }
             result.setType(OperationResult.Type.SUCCESS);
         } catch (IOException e) {
+            result.setType(OperationResult.Type.ERROR);
+            e.printStackTrace();
+        } catch (Exception e) {
             result.setType(OperationResult.Type.ERROR);
             e.printStackTrace();
         }

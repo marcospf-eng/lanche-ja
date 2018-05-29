@@ -12,6 +12,8 @@ public interface IngredientListContract {
         void showIngredientList(List<Ingredient> ingredientList);
         void showEmptyState();
         void finishActivity(List<Ingredient> ingredientsSelection);
+        void loadingControl(boolean visibility);
+        void showMessage(String message);
     }
 
     interface Presenter extends BasePresenter {

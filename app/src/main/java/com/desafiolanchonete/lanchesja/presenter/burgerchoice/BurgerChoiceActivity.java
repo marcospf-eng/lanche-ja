@@ -10,11 +10,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.desafiolanchonete.lanchesja.BaseActivity;
 import com.desafiolanchonete.lanchesja.R;
 import com.desafiolanchonete.lanchesja.data.model.Burger;
 import com.google.gson.Gson;
 
-public class BurgerChoiceActivity extends AppCompatActivity {
+public class BurgerChoiceActivity extends BaseActivity {
 
     public static final String INTENT_DATA_BURGER = "INTENT_DATA_BURGER";
 
@@ -28,11 +29,7 @@ public class BurgerChoiceActivity extends AppCompatActivity {
         if (burgerChoiceFragment == null) {
             burgerChoiceFragment = BurgerChoiceFragment.newInstance();
             burgerChoiceFragment.setArguments(getIntent().getExtras());
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.frame_layout_container_default, burgerChoiceFragment);
-            fragmentTransaction.commit();
+            startNewFragment(burgerChoiceFragment, getSupportFragmentManager(), R.id.frame_layout_container_default);
         }
 
         if (getSupportActionBar() != null) {

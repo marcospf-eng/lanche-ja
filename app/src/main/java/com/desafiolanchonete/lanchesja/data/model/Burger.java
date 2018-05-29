@@ -1,5 +1,6 @@
 package com.desafiolanchonete.lanchesja.data.model;
 
+import com.desafiolanchonete.lanchesja.infrastructure.Utils;
 import com.google.gson.annotations.SerializedName;
 
 import java.text.NumberFormat;
@@ -60,20 +61,10 @@ public class Burger {
     }
 
     public String getFormattedPrice() {
-        Locale locale = new Locale("pt", "BR");
-        return NumberFormat.getCurrencyInstance(locale).format(getBurgerPrice());
+        return Utils.getFormattedCurrencyDouble(getBurgerPrice());
     }
 
-    public String getFormattedIngredientsList() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Ingredient ingredient : ingredientList) {
-            stringBuilder.append(ingredient.getName());
-            if (!ingredientList.get(ingredientList.size() - 1).equals(ingredient)) {
-                stringBuilder.append(", ");
-            } else {
-                stringBuilder.append(".");
-            }
-        }
-        return stringBuilder.toString();
+    public String getFormattedIngredientList() {
+        return Utils.getFormattedIngredientList(ingredientList);
     }
 }

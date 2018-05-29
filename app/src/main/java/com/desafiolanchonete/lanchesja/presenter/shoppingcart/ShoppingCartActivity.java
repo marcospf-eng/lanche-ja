@@ -10,9 +10,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.desafiolanchonete.lanchesja.BaseActivity;
 import com.desafiolanchonete.lanchesja.R;
 
-public class ShoppingCartActivity extends AppCompatActivity {
+public class ShoppingCartActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
