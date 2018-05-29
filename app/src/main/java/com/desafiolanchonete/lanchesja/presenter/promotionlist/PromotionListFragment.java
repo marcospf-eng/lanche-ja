@@ -65,7 +65,7 @@ public class PromotionListFragment extends Fragment implements PromotionListCont
             mProgressDialog.setMessage(getString(R.string.loading_message));
         }
 
-        if (getContext() != null) {
+        if (getActivity() != null) {
             if (!visibility && mProgressDialog.isShowing()) {
                 mProgressDialog.dismiss();
             } else {

@@ -113,10 +113,12 @@ public class IngredientListFragment extends Fragment implements IngredientListCo
             mProgressDialog.setMessage(getString(R.string.loading_message));
         }
 
-        if (!visibility && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        } else {
-            mProgressDialog.show();
+        if (getActivity() != null) {
+            if (!visibility && mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            } else {
+                mProgressDialog.show();
+            }
         }
     }
 
